@@ -1,0 +1,339 @@
+
+/* ==============================
+   CONFIGURAÇÕES GERAIS
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0b0f19;
+    color: #f1f5f9;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: 90%;
+    max-width: 1150px;
+    margin: auto;
+}
+
+/* ==============================
+   CABEÇALHO
+================================= */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11, 15, 25, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #202838;
+}
+
+nav {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: #38bdf8;
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #aab4c5;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #38bdf8;
+}
+
+/* ==============================
+   APRESENTAÇÃO
+================================= */
+
+.hero {
+    min-height: 580px;
+    display: flex;
+    align-items: center;
+    padding: 90px 0;
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 7px 14px;
+    border: 1px solid #164e63;
+    border-radius: 30px;
+    color: #38bdf8;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 65px);
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: #38bdf8;
+}
+
+.hero p {
+    color: #9ca9bb;
+    font-size: 17px;
+    max-width: 650px;
+    margin-bottom: 30px;
+}
+
+/* ==============================
+   BOTÕES
+================================= */
+
+.buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.button {
+    padding: 13px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.primary {
+    background: #0284c7;
+    color: white;
+}
+
+.primary:hover {
+    background: #0369a1;
+    transform: translateY(-2px);
+}
+
+.secondary {
+    border: 1px solid #334155;
+    color: #e2e8f0;
+}
+
+.secondary:hover {
+    border-color: #38bdf8;
+    color: #38bdf8;
+}
+
+/* ==============================
+   SEÇÕES
+================================= */
+
+section {
+    padding: 85px 0;
+    border-top: 1px solid #202838;
+}
+
+.section-title {
+    margin-bottom: 40px;
+}
+
+.section-title small {
+    color: #38bdf8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.section-title h2 {
+    font-size: 32px;
+    margin-top: 8px;
+}
+
+/* ==============================
+   SOBRE MIM
+================================= */
+
+.about-text {
+    max-width: 800px;
+    color: #aab4c5;
+    font-size: 16px;
+}
+
+/* ==============================
+   HABILIDADES
+================================= */
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.skill {
+    background: #111827;
+    border: 1px solid #263244;
+    padding: 10px 17px;
+    border-radius: 7px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+/* ==============================
+   CARDS E PROJETOS
+================================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 13px;
+    padding: 25px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #0284c7;
+}
+
+.card h3 {
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #9ca9bb;
+    font-size: 14px;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+}
+
+.project-card .project-type {
+    color: #38bdf8;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.project-card a {
+    color: #38bdf8;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+/* ==============================
+   FORMAÇÃO
+================================= */
+
+.education {
+    border-left: 2px solid #0284c7;
+    padding-left: 22px;
+}
+
+.education p {
+    color: #9ca9bb;
+    margin-top: 8px;
+}
+
+/* ==============================
+   CONTATO
+================================= */
+
+.contact-text {
+    color: #aab4c5;
+    margin-bottom: 25px;
+}
+
+/* ==============================
+   RODAPÉ
+================================= */
+
+footer {
+    border-top: 1px solid #202838;
+    padding: 25px 0;
+    text-align: center;
+    color: #778397;
+    font-size: 13px;
+}
+
+/* ==============================
+   RESPONSIVIDADE
+================================= */
+
+@media (max-width: 700px) {
+
+    nav {
+        flex-direction: column;
+        padding: 18px 0;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .hero {
+        min-height: 480px;
+        padding: 65px 0;
+    }
+
+    .hero h1 {
+        letter-spacing: -1px;
+    }
+
+    section {
+        padding: 60px 0;
+    }
+}

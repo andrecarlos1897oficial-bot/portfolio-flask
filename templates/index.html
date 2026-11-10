@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andre Carlos | Desenvolvedor Full Stack</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para os ícones exatos das redes sociais -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#08090d',
+                        cardBg: '#12141d',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Fundo Smoky / Texture Gradient fiel à imagem de referência */
+        .smoky-bg {
+            background-color: #08090d;
+            background-image: 
+                radial-gradient(circle at 50% 35%, rgba(45, 55, 72, 0.45) 0%, transparent 60%),
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(30, 41, 59, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(15, 23, 42, 0.8) 0%, transparent 65%);
+            background-attachment: fixed;
+        }
+
+        /* Efeito de textura de fumaça e grão sutil */
+        .smoke-overlay {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at center, transparent 30%, rgba(8, 9, 13, 0.8) 100%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Sublinhado espesso no botão 'View My Projects' igual à imagem */
+        .thick-underline {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+        .thick-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .thick-underline:hover::after {
+            transform: translateY(2px);
+            opacity: 0.85;
+        }
+
+        /* Sombra e acabamento do Avatar 3D */
+        .avatar-shadow {
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.9));
+        }
+
+        /* Animações simples para as abas */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Toast Popup */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 14px 24px;
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.4s, fadeout 0.4s 2.6s;
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body class="smoky-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-white selection:text-black relative flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Toast de Notificação -->
+    <div id="toast">Formulário demonstrativo: conecte um serviço de envio para receber mensagens.</div>
+
+    <!-- Efeito de textura Smoky por cima do fundo -->
+    <div class="smoke-overlay"></div>
+
+    <!-- CONTAINER PRINCIPAL DO LAYOUT -->
+    <div class="min-h-screen flex flex-col justify-between relative z-10">
+
+        <!-- HEADER / NAVBAR (EXATAMENTE COMO NA REFERÊNCIA) -->
+        <header class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-8 flex items-center justify-between">
+            <!-- Logo Esquerda: Nome Andre Carlos -->
+            <button onclick="switchTab('home')" class="text-xl md:text-2xl font-bold tracking-tight text-white hover:opacity-90 transition-opacity focus:outline-none text-left">
+                Andre<span class="font-light text-gray-300"> Carlos</span>
+            </button>
+
+            <!-- Links de Navegação + Redes Sociais no Topo Direito -->
+            <div class="flex items-center gap-6 lg:gap-10">
+                <nav class="hidden md:flex items-center gap-8 text-sm md:text-base font-medium text-gray-300">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn hover:text-white transition-colors text-white font-semibold">Home</button>
+                    <button onclick="switchTab('projects')" id="nav-projects" class="nav-btn hover:text-white transition-colors">Projects</button>
+                    <button onclick="switchTab('contacts')" id="nav-contacts" class="nav-btn hover:text-white transition-colors">Contacts</button>
+                </nav>
+
+                <!-- Ícones das Redes Sociais: Instagram, GitHub, LinkedIn -->
+                <div class="flex items-center gap-5 text-gray-300 text-lg border-l border-gray-800 pl-6 md:border-none md:pl-0">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-transform hover:scale-110" title="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-transform hover:scale-110" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-transform hover:scale-110" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+
+                <!-- Botão de Menu Mobile -->
+                <button id="menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="Abrir Menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- MENU MOBILE DROPDOWN -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-20 z-50 bg-darkBg/95 backdrop-blur-xl border-b border-gray-800 px-6 py-6 flex flex-col gap-5 text-lg font-medium">
+            <button onclick="switchTab('home')" class="text-left text-gray-300 hover:text-white">Home</button>
+            <button onclick="switchTab('projects')" class="text-left text-gray-300 hover:text-white">Projects</button>
+            <button onclick="switchTab('contacts')" class="text-left text-gray-300 hover:text-white">Contacts</button>
+        </div>
+
+        <!-- MAIN CONTENT AREA WITH TABS -->
+        <main class="flex-1 flex flex-col justify-center">
+            
+            <!-- TAB 1: HOME (DESIGN DA REFERÊNCIA) -->
+            <section id="tab-home" class="tab-content active w-full max-w-7xl mx-auto px-6 lg:px-12 py-6 lg:py-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center">
+                    
+                    <!-- Textos de Apresentação (Lado Esquerdo) -->
+                    <div class="lg:col-span-7 flex flex-col items-start pt-2 lg:pt-0">
+                        <span class="text-lg md:text-2xl text-gray-200 font-medium mb-3 tracking-wide">
+                            Olá, eu sou Andre,
+                        </span>
+                        
+                        <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-[5.2rem] font-black tracking-tight text-white leading-[0.95] uppercase mb-6">
+                            DESENVOLVEDOR<br/>EM FORMAÇÃO
+                        </h1>
+
+                        <p class="text-gray-400 text-base md:text-lg max-w-xl font-normal leading-relaxed mb-10">
+                            Estudante de Desenvolvimento Full Stack na Cruzeiro do Sul, com foco em Python e desenvolvimento web. Estou construindo projetos práticos para evoluir em front-end, back-end, APIs e bancos de dados.
+                        </p>
+
+                        <!-- Botão com Sublinhado Espesso -->
+                        <button onclick="switchTab('projects')" class="thick-underline text-white text-xl md:text-2xl font-bold tracking-wide transition-all hover:opacity-90">
+                            Ver meus projetos
+                        </button>
+                    </div>
+
+                    <!-- Foto pessoal: coloque seu PNG sem fundo em static/images/minha-foto.png -->
+                    <div class="lg:col-span-5 flex justify-center lg:justify-end relative mt-6 lg:mt-0">
+                        <div class="relative w-full max-w-md flex justify-center items-end">
+                            <div class="absolute w-72 h-72 bg-slate-700/20 rounded-full blur-3xl pointer-events-none"></div>
+                            <img
+                                src="static/images/minha-foto.png"
+                                alt="Foto de Andre Carlos"
+                                class="relative z-10 w-full max-w-xs sm:max-w-sm h-auto object-contain avatar-shadow"
+                            >
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </section>
+
+            <!-- TAB 2: PROJECTS -->
+            <section id="tab-projects" class="tab-content w-full max-w-7xl mx-auto px-6 lg:px-12 py-12">
+                <div class="mb-10">
+                    <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-2">Projetos em desenvolvimento</h2>
+                    <div class="h-1 w-20 bg-white rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Projeto: aplicativo financeiro -->
+                    <article class="bg-cardBg p-6 rounded-2xl border border-gray-800/80 hover:border-gray-600 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-white/10 text-gray-300">Full Stack • Projeto prático</span>
+                                <a href="https://app-finan-as-pessoais.onrender.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white" aria-label="Acessar Sistema de Finanças Pessoais"><i class="fa-solid fa-arrow-up-right-from-square text-lg"></i></a>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Sistema de Finanças Pessoais</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                                Aplicação web desenvolvida com Flask para praticar a criação de rotas, organização de aplicação e disponibilização de um projeto online. Projeto de portfólio em evolução.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap gap-2 text-xs font-mono text-gray-300 mb-5">
+                                <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">Python</span>
+                            <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">Flask</span>
+                            <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">HTML</span>
+                                <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">CSS</span>
+                            </div>
+                            <a href="https://app-finan-as-pessoais.onrender.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-gray-300 transition-colors">
+                                Acessar aplicação <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Projeto: Cardápio Digital -->
+                    <article class="bg-cardBg p-6 rounded-2xl border border-gray-800/80 hover:border-gray-600 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-white/10 text-gray-300">Web • Em produção</span>
+                                <a href="https://cardapio-qrcode-1.onrender.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white" aria-label="Acessar Cardápio Digital"><i class="fa-solid fa-arrow-up-right-from-square text-lg"></i></a>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Cardápio Digital</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                                Cardápio digital para hamburgueria com acesso por QR Code, identificação por mesa e cliente, seleção de produtos por categoria e fluxo completo de pedidos.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap gap-2 text-xs font-mono text-gray-300 mb-5">
+                                <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">Python</span>
+                                <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">Flask</span>
+                                <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">HTML5</span>
+                                <span class="bg-darkBg px-2.5 py-1 rounded border border-gray-800">CSS3</span>
+                            </div>
+                            <a href="https://cardapio-qrcode-1.onrender.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-gray-300 transition-colors">
+                                Acessar aplicação <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Espaço reservado para futuro projeto -->
+                    <article class="bg-cardBg/50 p-6 rounded-2xl border border-gray-800/40 border-dashed flex items-center justify-center min-h-[200px]">
+                        <p class="text-gray-600 text-sm text-center">Em breve</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- TAB 3: CONTACTS -->
+            <section id="tab-contacts" class="tab-content w-full max-w-4xl mx-auto px-6 py-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-5xl font-black uppercase text-white mb-3">Vamos conversar</h2>
+                    <p class="text-gray-400 text-sm md:text-base">Estou aberto a oportunidades de estágio, primeira experiência em tecnologia, projetos e parcerias.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                    <!-- Formulário de Contato -->
+                    <form onsubmit="handleFormSubmit(event)" class="md:col-span-7 bg-cardBg/90 p-8 rounded-2xl border border-gray-800 space-y-5">
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Nome</label>
+                            <input type="text" required placeholder="Seu nome" class="w-full bg-darkBg border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">E-mail</label>
+                            <input type="email" required placeholder="seu@email.com" class="w-full bg-darkBg border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Mensagem</label>
+                            <textarea rows="4" required placeholder="Escreva sua mensagem aqui..." class="w-full bg-darkBg border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white text-sm resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-white text-black font-extrabold py-3.5 rounded-lg uppercase tracking-wider hover:bg-gray-200 transition-colors text-sm">
+                            Enviar mensagem
+                        </button>
+                    </form>
+
+                    <!-- Links Rápidos e Redes -->
+                    <div class="md:col-span-5 bg-cardBg/50 p-8 rounded-2xl border border-gray-800/60 space-y-6">
+                        <h3 class="text-lg font-bold text-white mb-4">Canais Diretos</h3>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <i class="fa-solid fa-envelope text-xl text-gray-400"></i>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase">E-mail</p>
+                                <p class="text-sm font-medium">Adicione seu e-mail profissional</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <i class="fa-brands fa-github text-xl text-gray-400"></i>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase">GitHub</p>
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-sm font-medium hover:underline">Adicione seu perfil do GitHub</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <i class="fa-brands fa-linkedin text-xl text-gray-400"></i>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase">LinkedIn</p>
+                                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="text-sm font-medium hover:underline">Adicione seu perfil do LinkedIn</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+
+
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT DE NAVEGAÇÃO ENTRE ABAS -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Alternância de Abas (Home, Projects, Contacts)
+        function switchTab(tabName) {
+            // Ocultar todas as abas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remover destaque dos botões do menu
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-white', 'font-semibold');
+            });
+
+            // Mostrar a aba selecionada
+            const selectedTab = document.getElementById(`tab-${tabName}`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Destacar botão ativo no menu
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-white', 'font-semibold');
+            }
+
+            // Fechar menu mobile se estiver aberto
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Toggle do Menu Mobile
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Envio do formulário
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const toast = document.getElementById('toast');
+            toast.textContent = 'Formulário demonstrativo: conecte um serviço de envio para receber mensagens.';
+            toast.className = 'show';
+            setTimeout(() => {
+                toast.className = toast.className.replace('show', '');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
